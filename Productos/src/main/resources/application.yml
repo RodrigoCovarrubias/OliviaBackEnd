@@ -1,0 +1,7 @@
+spring:
+    datasource:
+      postgres:
+        jdbcUrl: jdbc:postgresql://isabelle.db.elephantsql.com/qesxfpyu
+        username: qesxfpyu
+        password: GT6i8Bey_KHKkopSM0Y9SNHjx0WCuVFP
+        driver-class-name: org.postgresql.Driver
