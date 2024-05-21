@@ -50,6 +50,7 @@ public class ServiceDto {
                 producto.setDescripcion(rs.getString("descripcion"));
                 producto.setPrecio(rs.getInt("precio"));
                 producto.setStock(rs.getInt("stock"));
+                producto.setImgUrl(rs.getString("img_url"));
                 productos.add(producto);
             }
             return productos;
@@ -67,6 +68,7 @@ public class ServiceDto {
                 producto.setDescripcion(rs.getString("descripcion"));
                 producto.setPrecio(rs.getInt("precio"));
                 producto.setStock(rs.getInt("stock"));
+                producto.setImgUrl(rs.getString("img_url"));
                 productos.add(producto);
             }
             return productos;
@@ -83,6 +85,7 @@ public class ServiceDto {
                 producto.setDescripcion(rs.getString("descripcion"));
                 producto.setPrecio(rs.getInt("precio"));
                 producto.setStock(rs.getInt("stock"));
+                producto.setImgUrl(rs.getString("img_url"));
                 return producto;
             }, nombre);
         } catch (EmptyResultDataAccessException e) {
@@ -101,6 +104,7 @@ public class ServiceDto {
                 producto.setDescripcion(rs.getString("descripcion"));
                 producto.setPrecio(rs.getInt("precio"));
                 producto.setStock(rs.getInt("stock"));
+                producto.setImgUrl(rs.getString("img_url"));
                 productos.add(producto);
             }
             return productos;
@@ -118,6 +122,7 @@ public class ServiceDto {
                 producto.setDescripcion(rs.getString("descripcion"));
                 producto.setPrecio(rs.getInt("precio"));
                 producto.setStock(rs.getInt("stock"));
+                producto.setImgUrl(rs.getString("img_url"));
                 productos.add(producto);
             }
             return productos;
@@ -135,6 +140,7 @@ public class ServiceDto {
                 producto.setDescripcion(rs.getString("descripcion"));
                 producto.setPrecio(rs.getInt("precio"));
                 producto.setStock(rs.getInt("stock"));
+                producto.setImgUrl(rs.getString("img_url"));
                 productos.add(producto);
             }
             return productos;
