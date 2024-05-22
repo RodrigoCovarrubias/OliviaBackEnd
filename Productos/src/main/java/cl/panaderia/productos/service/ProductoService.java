@@ -41,4 +41,8 @@ public class ProductoService {
         return productoDto.deleteProducto(id);
     }
 
+    public Producto getProductoById(Integer id) {
+        return productoDto.getProductoById(id);
+    }
+
 }

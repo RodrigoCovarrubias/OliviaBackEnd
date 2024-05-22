@@ -151,4 +151,22 @@ public class ServiceDto {
         return jdbcTemplate.update(Query.DELETE_PRODUCTO, id) == 1;
     }
 
+    public Producto getProductoById(int id) {
+        try {
+            return jdbcTemplate.queryForObject(Query.GET_PRODUCTO_BY_ID, (rs, rowNum) -> {
+                Producto producto = new Producto();
+                producto.setId(rs.getInt("id"));
+                producto.setNombre(rs.getString("nombre"));
+                producto.setIdCategoria(rs.getInt("id_categoria"));
+                producto.setDescripcion(rs.getString("descripcion"));
+                producto.setPrecio(rs.getInt("precio"));
+                producto.setStock(rs.getInt("stock"));
+                producto.setImagenUrl(rs.getString("imagen_url"));
+                return producto;
+            }, id);
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
+    }
+
 }

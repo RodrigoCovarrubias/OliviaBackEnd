@@ -50,4 +50,9 @@ public class ProductoController {
         return ResponseEntity.ok(productoService.deleteProducto(id));
     }
 
+    @GetMapping("/getProductoById")
+    public ResponseEntity<Producto> getProductoById(@RequestParam Integer id) {
+        return ResponseEntity.ok(productoService.getProductoById(id));
+    }
+
 }

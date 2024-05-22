@@ -13,4 +13,5 @@ public class Query {
     public static final String GET_ALL_PRODUCT_WITH_LESS_PRICE = "SELECT * FROM producto WHERE precio < ?";
     public static final String GET_ALL_PRODUCT_WITH_PRICE_BETWEEN = "SELECT * FROM producto WHERE precio BETWEEN ? AND ?";
     public static final String DELETE_PRODUCTO = "DELETE FROM producto WHERE id = ?";
+    public static final String GET_PRODUCTO_BY_ID = "SELECT * FROM producto WHERE id = ?";
 }
