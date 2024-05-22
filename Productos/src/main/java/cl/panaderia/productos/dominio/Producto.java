@@ -11,5 +11,5 @@ public class Producto {
     private String descripcion;
     private Integer precio;
     private Integer stock;
-    private String imgUrl;
+    private String imagenUrl;
 }

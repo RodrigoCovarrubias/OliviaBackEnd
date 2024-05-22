@@ -14,7 +14,7 @@ public class ProductoService {
     private ServiceDto productoDto;
 
     public boolean insertProducto(Producto producto) {
-        return productoDto.insertProducto(producto.getNombre(), producto.getIdCategoria(), producto.getDescripcion(), producto.getPrecio());
+        return productoDto.insertProducto(producto.getNombre(), producto.getIdCategoria(), producto.getDescripcion(), producto.getPrecio(), producto.getImagenUrl());
     }
 
     public List<Producto> getAllProductos() {

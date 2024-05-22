@@ -18,8 +18,8 @@ public class ServiceDto {
     private JdbcTemplate jdbcTemplate;
 
 
-    public boolean insertProducto(String nombre, int idCategoria, String descripcion, Integer precio) {
-        return jdbcTemplate.update(Query.INSERT, nombre, idCategoria, descripcion, precio) == 1;
+    public boolean insertProducto(String nombre, int idCategoria, String descripcion, Integer precio, String imagenUrl ) {
+        return jdbcTemplate.update(Query.INSERT, nombre, idCategoria, descripcion, precio, imagenUrl) == 1;
     }
 
     public boolean createCategoria(String nombre) {
@@ -50,7 +50,7 @@ public class ServiceDto {
                 producto.setDescripcion(rs.getString("descripcion"));
                 producto.setPrecio(rs.getInt("precio"));
                 producto.setStock(rs.getInt("stock"));
-                producto.setImgUrl(rs.getString("img_url"));
+                producto.setImagenUrl(rs.getString("imagen_url"));
                 productos.add(producto);
             }
             return productos;
@@ -68,7 +68,7 @@ public class ServiceDto {
                 producto.setDescripcion(rs.getString("descripcion"));
                 producto.setPrecio(rs.getInt("precio"));
                 producto.setStock(rs.getInt("stock"));
-                producto.setImgUrl(rs.getString("img_url"));
+                producto.setImagenUrl(rs.getString("imagen_url"));
                 productos.add(producto);
             }
             return productos;
@@ -85,7 +85,7 @@ public class ServiceDto {
                 producto.setDescripcion(rs.getString("descripcion"));
                 producto.setPrecio(rs.getInt("precio"));
                 producto.setStock(rs.getInt("stock"));
-                producto.setImgUrl(rs.getString("img_url"));
+                producto.setImagenUrl(rs.getString("imagen_url"));
                 return producto;
             }, nombre);
         } catch (EmptyResultDataAccessException e) {
@@ -104,7 +104,7 @@ public class ServiceDto {
                 producto.setDescripcion(rs.getString("descripcion"));
                 producto.setPrecio(rs.getInt("precio"));
                 producto.setStock(rs.getInt("stock"));
-                producto.setImgUrl(rs.getString("img_url"));
+                producto.setImagenUrl(rs.getString("imagen_url"));
                 productos.add(producto);
             }
             return productos;
@@ -122,7 +122,7 @@ public class ServiceDto {
                 producto.setDescripcion(rs.getString("descripcion"));
                 producto.setPrecio(rs.getInt("precio"));
                 producto.setStock(rs.getInt("stock"));
-                producto.setImgUrl(rs.getString("img_url"));
+                producto.setImagenUrl(rs.getString("imagen_url"));
                 productos.add(producto);
             }
             return productos;
@@ -140,7 +140,7 @@ public class ServiceDto {
                 producto.setDescripcion(rs.getString("descripcion"));
                 producto.setPrecio(rs.getInt("precio"));
                 producto.setStock(rs.getInt("stock"));
-                producto.setImgUrl(rs.getString("img_url"));
+                producto.setImagenUrl(rs.getString("imagen_url"));
                 productos.add(producto);
             }
             return productos;
