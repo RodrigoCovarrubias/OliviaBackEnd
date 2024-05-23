@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Repository
 public class ServiceDao {
@@ -214,27 +215,34 @@ public class ServiceDao {
 
     public boolean updateUser(Integer id, Usuario usuario) {
         StringBuilder query = new StringBuilder(Query.UPDATE_USUARIO);
+        List<Object> params = new ArrayList<>();
         if (usuario.getNombre() != null) {
             query.append(" nombre = :nombre, ");
+            params.add(usuario.getNombre());
         }
         if (usuario.getApaterno() != null) {
             query.append(" apaterno = :apaterno, ");
+            params.add(usuario.getApaterno());
         }
         if (usuario.getAmaterno() != null) {
             query.append(" amaterno = :amaterno, ");
+            params.add(usuario.getAmaterno());
         }
         if (usuario.getCorreo() != null) {
             query.append(" correo = :correo, ");
+            params.add(usuario.getCorreo());
         }
         if (usuario.getContrasena() != null) {
             query.append(" contrasena = :contrasena, ");
+            params.add(usuario.getContrasena());
         }
         if (usuario.getIdRol() != null) {
             query.append(" id_rol = :id_rol, ");
+            params.add(usuario.getIdRol());
         }
         query.deleteCharAt(query.length() - 2);
         query.append(" WHERE id = :id");
-        return jdbcTemplate.update(query.toString(), usuario.getNombre(), usuario.getApaterno(), usuario.getAmaterno(), usuario.getCorreo(), usuario.getContrasena(), usuario.getIdRol(), id) == 1;
+        return jdbcTemplate.update(query.toString(), params.toArray()) == 1;
     }
 
 }
