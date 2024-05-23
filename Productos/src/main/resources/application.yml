@@ -5,3 +5,9 @@ spring:
         username: root
         password: Cov.3452
         driver-class-name: org.postgresql.Driver
+
+
+transbank:
+  api-key: 7b1b7f1c-0b1f-4b3d-9f3b-4b3b3b3b3b3b
+  commerce-code: 597055555532
+  environment: INTEGRATION

@@ -15,7 +15,7 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @GetMapping("getAllusuarios")
+    @GetMapping("getAllUsuarios")
     public ResponseEntity<List<Usuario>> getAllUsers() {
         return ResponseEntity.ok(userService.getAllUsers());
     }
@@ -39,8 +39,5 @@ public class UserController {
     public ResponseEntity<Boolean> updateUser(@RequestParam("id") Integer id, @RequestBody Usuario usuario) {
         return ResponseEntity.ok(userService.updateUser(id, usuario));
     }
-
-
-
 
 }

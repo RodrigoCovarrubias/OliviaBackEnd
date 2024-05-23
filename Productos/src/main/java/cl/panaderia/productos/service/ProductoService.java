@@ -14,6 +14,9 @@ public class ProductoService {
     private ServiceDao productoDto;
 
     public boolean insertProducto(Producto producto) {
+        if (producto.getNombre() == null || producto.getIdCategoria() == 0 || producto.getDescripcion() == null || producto.getPrecio() == 0 || producto.getImagenUrl() == null) {
+            return false;
+        }
         return productoDto.insertProducto(producto.getNombre(), producto.getIdCategoria(), producto.getDescripcion(), producto.getPrecio(), producto.getImagenUrl());
     }
 
@@ -36,6 +39,7 @@ public class ProductoService {
     public List<Producto> getAllProductosWithPriceBetween(Integer min, Integer max) {
         return productoDto.getAllProductsWithPriceBetween(min, max);
     }
+
 
     public boolean deleteProducto(Integer id) {
         return productoDto.deleteProducto(id);

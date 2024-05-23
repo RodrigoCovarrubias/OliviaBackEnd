@@ -17,6 +17,7 @@ public class ProductoController {
 
     @PostMapping("/crearProducto")
     public ResponseEntity<Boolean> insertProducto(@RequestBody Producto producto) {
+
         return ResponseEntity.ok(productoService.insertProducto(producto));
     }
 

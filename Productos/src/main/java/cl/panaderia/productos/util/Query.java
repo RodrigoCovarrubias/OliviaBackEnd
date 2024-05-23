@@ -7,7 +7,7 @@ public class Query {
             "INNER JOIN rol r ON u.id_rol = r.id";
     public static final String SELECT_USER_BY_ID = "SELECT * FROM usuario u "+
             "WHERE u.id = ?";
-    public static final String UPDATE_USUARIO = "UPDATE usuario";
+    public static final String UPDATE_USUARIO = "UPDATE usuario SET";
     public static final String DELETE_USUARIO = "DELETE FROM usuario WHERE id = ?";
     public static final String INSERT_USER = "INSERT INTO usuario (nombre, apaterno, amaterno, correo, contrasena,id_rol) VALUES (?, ?, ?, ?, ?, ?)";
     public static final String SELECT_ALL = "SELECT * FROM productos";

@@ -215,22 +215,22 @@ public class ServiceDao {
     public boolean updateUser(Integer id, Usuario usuario) {
         StringBuilder query = new StringBuilder(Query.UPDATE_USUARIO);
         if (usuario.getNombre() != null) {
-            query.append(" SET nombre = :nombre, ");
+            query.append(" nombre = :nombre, ");
         }
         if (usuario.getApaterno() != null) {
-            query.append(" SET apaterno = :apaterno, ");
+            query.append(" apaterno = :apaterno, ");
         }
         if (usuario.getAmaterno() != null) {
-            query.append(" SET amaterno = :amaterno, ");
+            query.append(" amaterno = :amaterno, ");
         }
         if (usuario.getCorreo() != null) {
-            query.append(" SET correo = :correo, ");
+            query.append(" correo = :correo, ");
         }
         if (usuario.getContrasena() != null) {
-            query.append(" SET contrasena = :contrasena, ");
+            query.append(" contrasena = :contrasena, ");
         }
         if (usuario.getIdRol() != null) {
-            query.append(" SET id_rol = :id_rol, ");
+            query.append(" id_rol = :id_rol, ");
         }
         query.deleteCharAt(query.length() - 2);
         query.append(" WHERE id = :id");

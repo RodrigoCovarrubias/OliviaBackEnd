@@ -23,6 +23,12 @@ public class UserService {
     }
 
     public boolean createUser(Usuario usuario) {
+        if (usuario.getNombre() == null || usuario.getApaterno() == null || usuario.getAmaterno() == null || usuario.getCorreo() == null || usuario.getIdRol() == 0 || usuario.getContrasena() == null) {
+            return false;
+        }
+        if (usuario.getContrasena().length() > 8) {
+            return false;
+        }
         String encriptedPassword = Base64.getEncoder().encodeToString(usuario.getContrasena().getBytes());
         usuario.setContrasena(encriptedPassword);
         return userDto.createUser(usuario);
