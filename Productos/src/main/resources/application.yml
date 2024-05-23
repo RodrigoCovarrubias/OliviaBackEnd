@@ -1,7 +1,7 @@
 spring:
     datasource:
       postgres:
-        jdbcUrl: jdbc:postgresql://isabelle.db.elephantsql.com/qesxfpyu
-        username: qesxfpyu
-        password: GT6i8Bey_KHKkopSM0Y9SNHjx0WCuVFP
+        jdbcUrl: jdbc:postgresql://oliviadb.c5eg88scmjv1.us-east-2.rds.amazonaws.com:5432/oliviaDb
+        username: root
+        password: Cov.3452
         driver-class-name: org.postgresql.Driver

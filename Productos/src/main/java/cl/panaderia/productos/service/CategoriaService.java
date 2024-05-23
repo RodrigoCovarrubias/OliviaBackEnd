@@ -2,7 +2,7 @@ package cl.panaderia.productos.service;
 
 import cl.panaderia.productos.dominio.Categoria;
 import cl.panaderia.productos.dominio.Producto;
-import cl.panaderia.productos.dto.ServiceDto;
+import cl.panaderia.productos.dto.ServiceDao;
 import cl.panaderia.productos.rest.CrearCategoriaRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,7 +13,7 @@ import java.util.List;
 public class CategoriaService {
 
     @Autowired
-    private ServiceDto categoriaDto;
+    private ServiceDao categoriaDto;
 
     public boolean createCategoria(CrearCategoriaRequest categoriaRequest) {
         return categoriaDto.createCategoria(categoriaRequest.nombre());

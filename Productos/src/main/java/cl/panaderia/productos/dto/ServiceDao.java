@@ -2,6 +2,7 @@ package cl.panaderia.productos.dto;
 
 import cl.panaderia.productos.dominio.Categoria;
 import cl.panaderia.productos.dominio.Producto;
+import cl.panaderia.productos.dominio.Usuario;
 import cl.panaderia.productos.util.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -12,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Repository
-public class ServiceDto {
+public class ServiceDao {
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
@@ -167,6 +168,73 @@ public class ServiceDto {
         } catch (EmptyResultDataAccessException e) {
             return null;
         }
+    }
+
+    public List<Usuario> getAllUsers() {
+        return jdbcTemplate.query(Query.SELECT_ALL_USERS, rs ->{
+            List<Usuario> usuarios = new ArrayList<>();
+            while(rs.next()) {
+                Usuario usuario = new Usuario();
+                usuario.setId(rs.getInt("id"));
+                usuario.setNombre(rs.getString("nombre"));
+                usuario.setApaterno(rs.getString("apaterno"));
+                usuario.setAmaterno(rs.getString("amaterno"));
+                usuario.setCorreo(rs.getString("correo"));
+                usuario.setIdRol(rs.getInt("id_rol"));
+                usuarios.add(usuario);
+            }
+            return usuarios;
+        });
+    }
+
+    public Usuario getUser(Integer id) {
+        return jdbcTemplate.query(Query.SELECT_USER_BY_ID,ps -> ps.setInt(1,id),
+            rs  -> {
+                if (rs.next()) {
+                    Usuario usuario = new Usuario();
+                    usuario.setId(rs.getInt("id"));
+                    usuario.setNombre(rs.getString("nombre"));
+                    usuario.setApaterno(rs.getString("apaterno"));
+                    usuario.setAmaterno(rs.getString("amaterno"));
+                    usuario.setCorreo(rs.getString("correo"));
+                    usuario.setIdRol(rs.getInt("id_rol"));
+                    return usuario;}
+                return null;
+        });
+    }
+
+    public boolean createUser(Usuario usuario) {
+        return jdbcTemplate.update(Query.INSERT_USER,
+                usuario.getNombre(), usuario.getApaterno(), usuario.getAmaterno(), usuario.getCorreo(), usuario.getContrasena(), usuario.getIdRol()) == 1;
+    }
+
+    public boolean deleteUser(Integer id) {
+        return jdbcTemplate.update(Query.DELETE_USUARIO, id) == 1;
+    }
+
+    public boolean updateUser(Integer id, Usuario usuario) {
+        StringBuilder query = new StringBuilder(Query.UPDATE_USUARIO);
+        if (usuario.getNombre() != null) {
+            query.append(" SET nombre = :nombre, ");
+        }
+        if (usuario.getApaterno() != null) {
+            query.append(" SET apaterno = :apaterno, ");
+        }
+        if (usuario.getAmaterno() != null) {
+            query.append(" SET amaterno = :amaterno, ");
+        }
+        if (usuario.getCorreo() != null) {
+            query.append(" SET correo = :correo, ");
+        }
+        if (usuario.getContrasena() != null) {
+            query.append(" SET contrasena = :contrasena, ");
+        }
+        if (usuario.getIdRol() != null) {
+            query.append(" SET id_rol = :id_rol, ");
+        }
+        query.deleteCharAt(query.length() - 2);
+        query.append(" WHERE id = :id");
+        return jdbcTemplate.update(query.toString(), usuario.getNombre(), usuario.getApaterno(), usuario.getAmaterno(), usuario.getCorreo(), usuario.getContrasena(), usuario.getIdRol(), id) == 1;
     }
 
 }
