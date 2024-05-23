@@ -216,33 +216,40 @@ public class ServiceDao {
     public boolean updateUser(Integer id, Usuario usuario) {
         StringBuilder query = new StringBuilder(Query.UPDATE_USUARIO);
         List<Object> params = new ArrayList<>();
+
         if (usuario.getNombre() != null) {
-            query.append(" nombre = :nombre, ");
+            query.append("nombre = ?, ");
             params.add(usuario.getNombre());
         }
         if (usuario.getApaterno() != null) {
-            query.append(" apaterno = :apaterno, ");
+            query.append("apaterno = ?, ");
             params.add(usuario.getApaterno());
         }
         if (usuario.getAmaterno() != null) {
-            query.append(" amaterno = :amaterno, ");
+            query.append("amaterno = ?, ");
             params.add(usuario.getAmaterno());
         }
         if (usuario.getCorreo() != null) {
-            query.append(" correo = :correo, ");
+            query.append("correo = ?, ");
             params.add(usuario.getCorreo());
         }
         if (usuario.getContrasena() != null) {
-            query.append(" contrasena = :contrasena, ");
+            query.append("contrasena = ?, ");
             params.add(usuario.getContrasena());
         }
         if (usuario.getIdRol() != null) {
-            query.append(" id_rol = :id_rol, ");
+            query.append("id_rol = ?, ");
             params.add(usuario.getIdRol());
         }
-        query.deleteCharAt(query.length() - 2);
-        query.append(" WHERE id = :id");
+
+        // Remove the last comma and space
+        if (params.size() > 0) {
+            query.delete(query.length() - 2, query.length());
+        }
+
+        query.append(" WHERE id = ?");
+        params.add(id);
+
         return jdbcTemplate.update(query.toString(), params.toArray()) == 1;
     }
-
-}
+    }
