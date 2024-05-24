@@ -9,4 +9,5 @@ public class TransBank {
     private String commerceCode;
     private String environment;
     private String returnUrl;
+
 }

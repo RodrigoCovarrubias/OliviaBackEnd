@@ -1,8 +1,6 @@
 package cl.panaderia.productos.dto;
 
-import cl.panaderia.productos.dominio.Categoria;
-import cl.panaderia.productos.dominio.Producto;
-import cl.panaderia.productos.dominio.Usuario;
+import cl.panaderia.productos.dominio.*;
 import cl.panaderia.productos.util.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -252,4 +250,19 @@ public class ServiceDao {
 
         return jdbcTemplate.update(query.toString(), params.toArray()) == 1;
     }
+
+    public boolean suscribe(NewsLetterRequest newsLetter) {
+        return jdbcTemplate.update(Query.INSERT_NEWSLETTER, newsLetter.getNombre(), newsLetter.getCorreo()) == 1;
     }
+
+    public List<RolesResponse> getRoles() {
+        return jdbcTemplate.query(Query.GET_ROLES, rs ->{
+            List<RolesResponse> roles = new ArrayList<>();
+            while(rs.next()) {
+                roles.add(new RolesResponse(rs.getInt("id"), rs.getString("nombre")));
+            }
+            return roles;
+        });
+    }
+
+}

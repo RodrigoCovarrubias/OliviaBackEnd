@@ -1,5 +1,6 @@
 package cl.panaderia.productos.service;
 
+import cl.panaderia.productos.dominio.RolesResponse;
 import cl.panaderia.productos.dominio.Usuario;
 import cl.panaderia.productos.dto.ServiceDao;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,5 +45,9 @@ public class UserService {
             usuario.setContrasena(encriptedPassword);
         }
         return userDto.updateUser(id, usuario);
+    }
+
+    public List<RolesResponse> getRoles() {
+        return userDto.getRoles();
     }
 }

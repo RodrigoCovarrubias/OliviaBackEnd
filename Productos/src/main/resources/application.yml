@@ -8,6 +8,6 @@ spring:
 
 
 transbank:
-  api-key: 7b1b7f1c-0b1f-4b3d-9f3b-4b3b3b3b3b3b
+  api-key: 579B532A7440BB0C9079DED94D31EA1615BACEB56610332264630D42D0A36B1C
   commerce-code: 597055555532
   environment: INTEGRATION

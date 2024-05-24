@@ -1,5 +1,6 @@
 package cl.panaderia.productos.controller;
 
+import cl.panaderia.productos.dominio.RolesResponse;
 import cl.panaderia.productos.dominio.Usuario;
 import cl.panaderia.productos.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +39,11 @@ public class UserController {
     @PutMapping("usuarioById")
     public ResponseEntity<Boolean> updateUser(@RequestParam("id") Integer id, @RequestBody Usuario usuario) {
         return ResponseEntity.ok(userService.updateUser(id, usuario));
+    }
+
+    @GetMapping("roles")
+    public ResponseEntity<List<RolesResponse>> getRoles() {
+        return ResponseEntity.ok(userService.getRoles());
     }
 
 }
