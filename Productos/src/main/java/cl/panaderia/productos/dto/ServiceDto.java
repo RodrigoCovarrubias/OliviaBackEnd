@@ -9,10 +9,9 @@ import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 @Repository
-public class ServiceDao {
+public class ServiceDto {
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
@@ -263,6 +262,10 @@ public class ServiceDao {
             }
             return roles;
         });
+    }
+
+    public boolean updateProductoStock(int id, int stock) {
+        return jdbcTemplate.update(Query.UPDATE_STOCK, stock, id) == 1;
     }
 
 }

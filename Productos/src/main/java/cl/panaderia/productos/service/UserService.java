@@ -2,7 +2,7 @@ package cl.panaderia.productos.service;
 
 import cl.panaderia.productos.dominio.RolesResponse;
 import cl.panaderia.productos.dominio.Usuario;
-import cl.panaderia.productos.dto.ServiceDao;
+import cl.panaderia.productos.dto.ServiceDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,7 +13,7 @@ import java.util.List;
 public class UserService {
 
     @Autowired
-    private ServiceDao userDto;
+    private ServiceDto userDto;
 
     public List<Usuario> getAllUsers() {
         return  userDto.getAllUsers();

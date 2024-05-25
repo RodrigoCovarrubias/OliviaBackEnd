@@ -1,7 +1,7 @@
 package cl.panaderia.productos.service;
 
 import cl.panaderia.productos.dominio.Producto;
-import cl.panaderia.productos.dto.ServiceDao;
+import cl.panaderia.productos.dto.ServiceDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,7 +11,7 @@ import java.util.List;
 public class ProductoService {
 
     @Autowired
-    private ServiceDao productoDto;
+    private ServiceDto productoDto;
 
     public boolean insertProducto(Producto producto) {
         if (producto.getNombre() == null || producto.getIdCategoria() == 0 || producto.getDescripcion() == null || producto.getPrecio() == 0 || producto.getImagenUrl() == null) {
@@ -48,5 +48,11 @@ public class ProductoService {
     public Producto getProductoById(Integer id) {
         return productoDto.getProductoById(id);
     }
+
+    public Boolean updateProductoStock(List<Producto> productos) {
+
+       return null;
+    }
+
 
 }

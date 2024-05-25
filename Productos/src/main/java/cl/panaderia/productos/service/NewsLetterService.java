@@ -1,7 +1,7 @@
 package cl.panaderia.productos.service;
 
 import cl.panaderia.productos.dominio.NewsLetterRequest;
-import cl.panaderia.productos.dto.ServiceDao;
+import cl.panaderia.productos.dto.ServiceDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 public class NewsLetterService {
 
     @Autowired
-    private ServiceDao newsLetterDto;
+    private ServiceDto newsLetterDto;
 
     private static final String REGEX_EMAIL = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
 
