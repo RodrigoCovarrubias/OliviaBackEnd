@@ -5,8 +5,14 @@ import cl.panaderia.productos.util.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.PreparedStatementCreator;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -266,6 +272,23 @@ public class ServiceDto {
 
     public boolean updateProductoStock(int id, int stock) {
         return jdbcTemplate.update(Query.UPDATE_STOCK, stock, id) == 1;
+    }
+
+    public int insertVenta(Integer idBoleta) {
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+
+        jdbcTemplate.update(new PreparedStatementCreator() {
+            @Override
+            public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
+                PreparedStatement ps = connection.prepareStatement(Query.INSERT_VENTA, new String[] {"id"});
+                ps.setInt(1, 1); // medio de pago seteado en duro ya que solo considera pagos por webpay
+                ps.setInt(2, idBoleta);
+                ps.setDate(3, new java.sql.Date(System.currentTimeMillis()));
+                return ps;
+            }
+        }, keyHolder);
+
+        return keyHolder.getKey().intValue();
     }
 
 }

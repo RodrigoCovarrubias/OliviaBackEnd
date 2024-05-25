@@ -49,7 +49,7 @@ public class ProductoService {
         return productoDto.getProductoById(id);
     }
 
-    public Boolean updateProductoStock(List<Producto> productos) {
+    public Boolean updateProductoStock(Integer idVenta, List<Producto> productos) {
 
        return null;
     }

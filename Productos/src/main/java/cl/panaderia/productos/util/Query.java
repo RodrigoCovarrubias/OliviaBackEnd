@@ -25,5 +25,5 @@ public class Query {
     public static final String DELETE_PRODUCTO = "DELETE FROM producto WHERE id = ?";
     public static final String GET_PRODUCTO_BY_ID = "SELECT * FROM producto WHERE id = ?";
     public static final String UPDATE_STOCK = "UPDATE producto SET stock = ? WHERE id = ?";
-
+    public static final String INSERT_VENTA = "INSERT INTO public.venta (id_medio_pago, id_boleta, fecha) VALUES( ?, ?, ?)";
 }

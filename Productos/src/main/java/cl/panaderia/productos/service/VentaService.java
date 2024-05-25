@@ -2,6 +2,7 @@ package cl.panaderia.productos.service;
 
 import cl.panaderia.productos.dominio.Producto;
 import cl.panaderia.productos.dominio.TransBank;
+import cl.panaderia.productos.dto.ServiceDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
@@ -13,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.security.SecureRandom;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,6 +27,9 @@ public class VentaService {
 
     @Autowired
     private ProductoService productoService;
+
+    @Autowired
+    private ServiceDto ventaDto;
 
     private static final ObjectMapper mapper = new ObjectMapper();
 
@@ -56,6 +61,14 @@ public class VentaService {
                 return mapper.readValue(responseString, HashMap.class);
             }
         }
+    }
+
+    public boolean confirmarVenta(List<Producto> productos) {
+
+        SecureRandom secureRandom = new SecureRandom();
+        int idBoleta = secureRandom.nextInt(1000);
+        Integer idVenta = ventaDto.insertVenta(idBoleta);
+        return productoService.updateProductoStock(idVenta,productos);
     }
 
     public int calculateAmount(List<Producto> productos) {

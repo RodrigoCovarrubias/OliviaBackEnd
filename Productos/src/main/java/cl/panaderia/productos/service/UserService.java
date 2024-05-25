@@ -15,6 +15,9 @@ public class UserService {
     @Autowired
     private ServiceDto userDto;
 
+    //Validacion espacios contraseña
+    private static final String REGEXP = ".*\\s+.*";
+
     public List<Usuario> getAllUsers() {
         return  userDto.getAllUsers();
     }
@@ -24,10 +27,7 @@ public class UserService {
     }
 
     public boolean createUser(Usuario usuario) {
-        if (usuario.getNombre() == null || usuario.getApaterno() == null || usuario.getAmaterno() == null || usuario.getCorreo() == null || usuario.getIdRol() == 0 || usuario.getContrasena() == null) {
-            return false;
-        }
-        if (usuario.getContrasena().length() < 8) {
+        if (isInvalidUser(usuario)) {
             return false;
         }
         String encriptedPassword = Base64.getEncoder().encodeToString(usuario.getContrasena().getBytes());
@@ -45,6 +45,17 @@ public class UserService {
             usuario.setContrasena(encriptedPassword);
         }
         return userDto.updateUser(id, usuario);
+    }
+
+    private boolean isInvalidUser(Usuario usuario) {
+        return usuario.getNombre() == null ||
+                usuario.getApaterno() == null ||
+                usuario.getAmaterno() == null ||
+                usuario.getCorreo() == null ||
+                usuario.getIdRol() == 0 ||
+                usuario.getContrasena() == null ||
+                usuario.getContrasena().length() < 8 ||
+                usuario.getContrasena().matches(REGEXP);
     }
 
     public List<RolesResponse> getRoles() {
