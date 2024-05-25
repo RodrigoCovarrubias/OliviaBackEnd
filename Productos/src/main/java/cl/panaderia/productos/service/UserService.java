@@ -41,6 +41,9 @@ public class UserService {
     }
 
     public boolean updateUser(Integer id, Usuario usuario) {
+        if (usuario.getCorreo() != null && usuario.getCorreo().matches(REGEX_EMAIL)) {
+            return false;
+        }
         if (usuario.getContrasena() != null) {
             String encriptedPassword = Base64.getEncoder().encodeToString(usuario.getContrasena().getBytes());
             usuario.setContrasena(encriptedPassword);
