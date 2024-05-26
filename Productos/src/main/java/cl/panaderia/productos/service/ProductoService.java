@@ -54,5 +54,9 @@ public class ProductoService {
        return null;
     }
 
+    public Boolean updateProducto(Producto producto) {
+        return productoDto.updateProducto(producto);
+    }
+
 
 }

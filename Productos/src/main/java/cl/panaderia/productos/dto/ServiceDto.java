@@ -291,4 +291,43 @@ public class ServiceDto {
         return keyHolder.getKey().intValue();
     }
 
+    public boolean updateProducto(Producto producto) {
+        StringBuilder query = new StringBuilder(Query.UPDATE_PRODUCTO);
+        List<Object> params = new ArrayList<>();
+        if (producto.getNombre() != null) {
+            query.append("nombre = ?, ");
+            params.add(producto.getNombre());
+        }
+        if (producto.getIdCategoria() != null) {
+            query.append("id_categoria = ?, ");
+            params.add(producto.getIdCategoria());
+        }
+        if (producto.getDescripcion() != null) {
+            query.append("descripcion = ?, ");
+            params.add(producto.getDescripcion());
+        }
+        if (producto.getPrecio() != null) {
+            query.append("precio = ?, ");
+            params.add(producto.getPrecio());
+        }
+        if (producto.getImagenUrl() != null) {
+            query.append("imagen_url = ?, ");
+            params.add(producto.getImagenUrl());
+        }
+        if (producto.getStock() != null) {
+            query.append("stock = ?, ");
+            params.add(producto.getStock());
+        }
+        if (!params.isEmpty()) {
+            query.delete(query.length() - 2, query.length());
+        }
+        query.append(" WHERE id = ?");
+        params.add(producto.getId());
+
+        return jdbcTemplate.update(query.toString(), params.toArray()) == 1;
+
+
+
+    }
+
 }

@@ -56,4 +56,10 @@ public class ProductoController {
         return ResponseEntity.ok(productoService.getProductoById(id));
     }
 
+    @PutMapping("/updateProducto")
+    public ResponseEntity<Boolean> updateProducto(@RequestBody Producto producto) {
+        return ResponseEntity.ok(productoService.updateProducto(producto));
+    }
+
+
 }

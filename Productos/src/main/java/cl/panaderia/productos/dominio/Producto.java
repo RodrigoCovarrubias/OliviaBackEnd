@@ -7,7 +7,7 @@ public class Producto {
 
     private int id;
     private String nombre;
-    private int idCategoria;
+    private Integer idCategoria;
     private String descripcion;
     private Integer precio;
     private Integer stock;
