@@ -23,8 +23,8 @@ public class ServiceDto {
     private JdbcTemplate jdbcTemplate;
 
 
-    public boolean insertProducto(String nombre, int idCategoria, String descripcion, Integer precio, String imagenUrl ) {
-        return jdbcTemplate.update(Query.INSERT, nombre, idCategoria, descripcion, precio, imagenUrl) == 1;
+    public boolean insertProducto(String nombre, int idCategoria, String descripcion, Integer precio, String imagenUrl, Integer stock) {
+        return jdbcTemplate.update(Query.INSERT, nombre, idCategoria, descripcion, precio, imagenUrl, stock) == 1;
     }
 
     public boolean createCategoria(String nombre) {

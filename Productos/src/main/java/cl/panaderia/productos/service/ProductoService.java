@@ -14,10 +14,10 @@ public class ProductoService {
     private ServiceDto productoDto;
 
     public boolean insertProducto(Producto producto) {
-        if (producto.getNombre() == null || producto.getIdCategoria() == 0 || producto.getDescripcion() == null || producto.getPrecio() == 0 || producto.getImagenUrl() == null) {
+        if (producto.getNombre() == null || producto.getIdCategoria() == 0 || producto.getDescripcion() == null || producto.getPrecio() == 0 || producto.getImagenUrl() == null|| producto.getStock() == 0) {
             return false;
         }
-        return productoDto.insertProducto(producto.getNombre(), producto.getIdCategoria(), producto.getDescripcion(), producto.getPrecio(), producto.getImagenUrl());
+        return productoDto.insertProducto(producto.getNombre(), producto.getIdCategoria(), producto.getDescripcion(), producto.getPrecio(), producto.getImagenUrl(), producto.getStock());
     }
 
     public List<Producto> getAllProductos() {
