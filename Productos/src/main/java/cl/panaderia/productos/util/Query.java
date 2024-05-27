@@ -13,7 +13,7 @@ public class Query {
     public static final String DELETE_USUARIO = "DELETE FROM usuario WHERE id = ?";
     public static final String INSERT_USER = "INSERT INTO usuario (nombre, apaterno, amaterno, correo, contrasena,id_rol) VALUES (?, ?, ?, ?, ?, ?)";
     public static final String SELECT_ALL = "SELECT * FROM productos";
-    public static final String INSERT = "INSERT INTO producto (nombre, id_categoria, descripcion, precio, imagen_url, stock) VALUES (?, ?, ?, ?, ?, ?)";
+    public static final String INSERT = "INSERT INTO producto (nombre, id_categoria, descripcion, precio, imagen_url, stock, sku) VALUES (?, ?, ?, ?, ?, ?, ?)";
     public static final String INSERT_CATEGORIA = "INSERT INTO categoria (nombre) VALUES (?)";
     public static final String SELECT_ALL_CATEGORIA = "SELECT * FROM categoria";
     public static final String GET_PRODUCTO_FROM_CATEGORY = "SELECT * FROM producto WHERE id_categoria = ?";

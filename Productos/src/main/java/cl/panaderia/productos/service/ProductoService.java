@@ -5,6 +5,7 @@ import cl.panaderia.productos.dto.ServiceDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
 import java.util.List;
 
 @Service
@@ -14,10 +15,11 @@ public class ProductoService {
     private ServiceDto productoDto;
 
     public boolean insertProducto(Producto producto) {
-        if (producto.getNombre() == null || producto.getIdCategoria() == 0 || producto.getDescripcion() == null || producto.getPrecio() == 0 || producto.getImagenUrl() == null|| producto.getStock() == 0) {
+        if (producto.getNombre() == null || producto.getIdCategoria() == 0 || producto.getDescripcion() == null || producto.getPrecio() == 0 || producto.getImagenUrl() == null|| producto.getStock() < 0) {
             return false;
         }
-        return productoDto.insertProducto(producto.getNombre(), producto.getIdCategoria(), producto.getDescripcion(), producto.getPrecio(), producto.getImagenUrl(), producto.getStock());
+        producto.setSku(generateSKU(producto));
+        return productoDto.insertProducto(producto);
     }
 
     public List<Producto> getAllProductos() {
@@ -58,5 +60,9 @@ public class ProductoService {
         return productoDto.updateProducto(producto);
     }
 
+
+    private String generateSKU(Producto producto) {
+        return producto.getNombre().substring(0, 3) + Instant.now().toEpochMilli();
+    }
 
 }

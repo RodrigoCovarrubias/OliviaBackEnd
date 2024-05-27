@@ -12,10 +12,12 @@ public class NewsLetterService {
     private ServiceDto newsLetterDto;
 
     private static final String REGEX_EMAIL = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
+    private static final String REGEX_NAME = "[a-zA-Z]";
 
     public boolean suscribe(NewsLetterRequest newsLetter) {
         if (newsLetter.getNombre() == null || newsLetter.getCorreo() == null
-                || !newsLetter.getCorreo().matches(REGEX_EMAIL)) {
+                || !newsLetter.getCorreo().matches(REGEX_EMAIL)
+                || !newsLetter.getNombre().matches(REGEX_NAME)) {
             return false;
         }
         return newsLetterDto.suscribe(newsLetter);

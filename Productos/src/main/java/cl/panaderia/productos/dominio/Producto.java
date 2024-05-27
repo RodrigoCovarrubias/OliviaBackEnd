@@ -12,4 +12,5 @@ public class Producto {
     private Integer precio;
     private Integer stock;
     private String imagenUrl;
+    private String sku;
 }

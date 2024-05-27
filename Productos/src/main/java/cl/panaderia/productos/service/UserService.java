@@ -18,6 +18,7 @@ public class UserService {
     //Validacion espacios contraseña
     private static final String REGEXP = ".*\\s+.*";
     private static final String REGEX_EMAIL = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
+    private static final String REGEX_NAME = "[a-zA-Z]";
 
     public List<Usuario> getAllUsers() {
         return  userDto.getAllUsers();
@@ -60,7 +61,8 @@ public class UserService {
                 usuario.getContrasena() == null ||
                 usuario.getContrasena().length() < 8 ||
                 usuario.getContrasena().matches(REGEXP) ||
-                !usuario.getCorreo().matches(REGEX_EMAIL);
+                !usuario.getCorreo().matches(REGEX_EMAIL)
+                || !usuario.getNombre().matches(REGEX_NAME);
     }
 
     public List<RolesResponse> getRoles() {

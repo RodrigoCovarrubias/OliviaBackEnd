@@ -23,8 +23,14 @@ public class ServiceDto {
     private JdbcTemplate jdbcTemplate;
 
 
-    public boolean insertProducto(String nombre, int idCategoria, String descripcion, Integer precio, String imagenUrl, Integer stock) {
-        return jdbcTemplate.update(Query.INSERT, nombre, idCategoria, descripcion, precio, imagenUrl, stock) == 1;
+    public boolean insertProducto(Producto producto) {
+        return jdbcTemplate.update(Query.INSERT, producto.getNombre()
+                , producto.getIdCategoria()
+                , producto.getDescripcion()
+                , producto.getPrecio()
+                , producto.getImagenUrl()
+                , producto.getStock()
+                , producto.getSku()) == 1;
     }
 
     public boolean createCategoria(String nombre) {
@@ -56,6 +62,7 @@ public class ServiceDto {
                 producto.setPrecio(rs.getInt("precio"));
                 producto.setStock(rs.getInt("stock"));
                 producto.setImagenUrl(rs.getString("imagen_url"));
+                producto.setSku(rs.getString("sku"));
                 productos.add(producto);
             }
             return productos;
@@ -74,6 +81,7 @@ public class ServiceDto {
                 producto.setPrecio(rs.getInt("precio"));
                 producto.setStock(rs.getInt("stock"));
                 producto.setImagenUrl(rs.getString("imagen_url"));
+                producto.setSku(rs.getString("sku"));
                 productos.add(producto);
             }
             return productos;
@@ -91,6 +99,7 @@ public class ServiceDto {
                 producto.setPrecio(rs.getInt("precio"));
                 producto.setStock(rs.getInt("stock"));
                 producto.setImagenUrl(rs.getString("imagen_url"));
+                producto.setSku(rs.getString("sku"));
                 return producto;
             }, nombre);
         } catch (EmptyResultDataAccessException e) {
@@ -110,6 +119,7 @@ public class ServiceDto {
                 producto.setPrecio(rs.getInt("precio"));
                 producto.setStock(rs.getInt("stock"));
                 producto.setImagenUrl(rs.getString("imagen_url"));
+                producto.setSku(rs.getString("sku"));
                 productos.add(producto);
             }
             return productos;
@@ -128,6 +138,7 @@ public class ServiceDto {
                 producto.setPrecio(rs.getInt("precio"));
                 producto.setStock(rs.getInt("stock"));
                 producto.setImagenUrl(rs.getString("imagen_url"));
+                producto.setSku(rs.getString("sku"));
                 productos.add(producto);
             }
             return productos;
@@ -146,6 +157,7 @@ public class ServiceDto {
                 producto.setPrecio(rs.getInt("precio"));
                 producto.setStock(rs.getInt("stock"));
                 producto.setImagenUrl(rs.getString("imagen_url"));
+                producto.setSku(rs.getString("sku"));
                 productos.add(producto);
             }
             return productos;
@@ -167,6 +179,7 @@ public class ServiceDto {
                 producto.setPrecio(rs.getInt("precio"));
                 producto.setStock(rs.getInt("stock"));
                 producto.setImagenUrl(rs.getString("imagen_url"));
+                producto.setSku(rs.getString("sku"));
                 return producto;
             }, id);
         } catch (EmptyResultDataAccessException e) {
