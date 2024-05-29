@@ -18,7 +18,7 @@ public class UserService {
     //Validacion espacios contraseña
     private static final String REGEXP = ".*\\s+.*";
     private static final String REGEX_EMAIL = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
-    private static final String REGEX_NAME = "[a-zA-Z]";
+    private static final String REGEX_NAME = "^[a-zA-Z ]+$";
 
     public List<Usuario> getAllUsers() {
         return  userDto.getAllUsers();
@@ -53,17 +53,27 @@ public class UserService {
     }
 
     private boolean isInvalidUser(Usuario usuario) {
-        return usuario.getNombre() == null ||
-                usuario.getApaterno() == null ||
-                usuario.getAmaterno() == null ||
-                usuario.getCorreo() == null ||
-                usuario.getIdRol() == 0 ||
-                usuario.getContrasena() == null ||
-                usuario.getContrasena().length() < 8 ||
-                usuario.getContrasena().matches(REGEXP) ||
-                !usuario.getCorreo().matches(REGEX_EMAIL)
-                || !usuario.getNombre().matches(REGEX_NAME);
+        System.out.println("Validando usuario: " + usuario);
+        boolean isValidName = usuario.getNombre() != null && usuario.getNombre().matches(REGEX_NAME);
+        boolean isValidApaterno = usuario.getApaterno() != null && usuario.getApaterno().matches(REGEX_NAME);
+        boolean isValidAmaterno = usuario.getAmaterno() != null && usuario.getAmaterno().matches(REGEX_NAME);
+        boolean isValidCorreo = usuario.getCorreo() != null && usuario.getCorreo().matches(REGEX_EMAIL);
+        boolean isValidContrasena = usuario.getContrasena() != null && !usuario.getContrasena().matches(REGEXP) && usuario.getContrasena().length() >= 8;
+
+        System.out.println("Nombre válido: " + isValidName);
+        System.out.println("Apaterno válido: " + isValidApaterno);
+        System.out.println("Amaterno válido: " + isValidAmaterno);
+        System.out.println("Correo válido: " + isValidCorreo);
+        System.out.println("Contraseña válida: " + isValidContrasena);
+
+        return usuario.getIdRol() == 0 ||
+                !isValidName ||
+                !isValidApaterno ||
+                !isValidAmaterno ||
+                !isValidCorreo ||
+                !isValidContrasena;
     }
+
 
     public List<RolesResponse> getRoles() {
         return userDto.getRoles();
