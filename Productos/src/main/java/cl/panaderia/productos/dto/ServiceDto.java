@@ -339,8 +339,19 @@ public class ServiceDto {
 
         return jdbcTemplate.update(query.toString(), params.toArray()) == 1;
 
+    }
 
-
+    public List<NewsLetterRequest> getAllSuscribers() {
+        return jdbcTemplate.query(Query.GET_NEWSLETTER_SUBS, rs ->{
+            List<NewsLetterRequest> newsLetters = new ArrayList<>();
+            while(rs.next()) {
+                NewsLetterRequest newsLetter = new NewsLetterRequest();
+                newsLetter.setNombre(rs.getString("nombre"));
+                newsLetter.setCorreo(rs.getString("correo"));
+                newsLetters.add(newsLetter);
+            }
+            return newsLetters;
+        });
     }
 
 }

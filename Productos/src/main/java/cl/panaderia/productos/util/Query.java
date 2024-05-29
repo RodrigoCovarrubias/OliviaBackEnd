@@ -27,4 +27,5 @@ public class Query {
     public static final String UPDATE_STOCK = "UPDATE producto SET stock = ? WHERE id = ?";
     public static final String INSERT_VENTA = "INSERT INTO public.venta (id_medio_pago, id_boleta, fecha) VALUES( ?, ?, ?)";
     public static final String UPDATE_PRODUCTO = "UPDATE producto SET ";
+    public static final String GET_NEWSLETTER_SUBS = "SELECT * FROM newsletter";
 }

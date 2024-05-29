@@ -5,6 +5,8 @@ import cl.panaderia.productos.dto.ServiceDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class NewsLetterService {
 
@@ -21,6 +23,10 @@ public class NewsLetterService {
             return false;
         }
         return newsLetterDto.suscribe(newsLetter);
+    }
+
+    public List<NewsLetterRequest> getAllSuscribers() {
+        return newsLetterDto.getAllSuscribers();
     }
 
 
