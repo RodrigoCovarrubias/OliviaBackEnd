@@ -354,4 +354,18 @@ public class ServiceDto {
         });
     }
 
+    public Integer getValueById(Integer id) {
+        return jdbcTemplate.queryForObject(Query.GET_PRODUCTO_VALUE, Integer.class, id);
+    }
+
+    public boolean validateStock(Integer id, Integer quantity) {
+        return Boolean.TRUE.equals(jdbcTemplate.query(Query.GET_PRODUCTO_STOCK, ps -> ps.setInt(1, id), rs -> {
+                    if (rs.next()) {
+                        return rs.getInt("stock") >= quantity;
+                    }
+                    return false;
+                }
+        ));
+    }
+
 }

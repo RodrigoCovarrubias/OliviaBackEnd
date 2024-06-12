@@ -28,4 +28,6 @@ public class Query {
     public static final String INSERT_VENTA = "INSERT INTO public.venta (id_medio_pago, id_boleta, fecha) VALUES( ?, ?, ?)";
     public static final String UPDATE_PRODUCTO = "UPDATE producto SET ";
     public static final String GET_NEWSLETTER_SUBS = "SELECT * FROM newsletter";
+    public static final String GET_PRODUCTO_VALUE = "SELECT precio FROM producto WHERE id = ?";
+    public static final String GET_PRODUCTO_STOCK = "SELECT stock FROM producto WHERE id = ?";
 }

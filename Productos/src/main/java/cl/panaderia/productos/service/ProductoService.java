@@ -65,4 +65,13 @@ public class ProductoService {
         return producto.getNombre().substring(0, 3) + Instant.now().toEpochMilli();
     }
 
+    public Integer getValueById(Integer id) {
+        return productoDto.getValueById(id);
+    }
+
+    public boolean validateStock(Integer id, Integer quantity) {
+        return productoDto.validateStock(id, quantity);
+
+    }
+
 }

@@ -1,6 +1,7 @@
 package cl.panaderia.productos.controller;
 
 import cl.panaderia.productos.dominio.Producto;
+import cl.panaderia.productos.dominio.VentaRequest;
 import cl.panaderia.productos.service.VentaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +19,7 @@ public class VentaController {
     private VentaService ventaService;
 
     @PostMapping("pay")
-    public Map<String, Object> pay(@RequestBody List<Producto> productos) {
+    public Map<String, Object> pay(@RequestBody List<VentaRequest> productos) {
 
         try {
             return ventaService.createTransaction(productos);
