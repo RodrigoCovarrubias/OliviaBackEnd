@@ -31,8 +31,8 @@ public class VentaController {
     }
 
     @PostMapping("confirmarVenta")
-    public ResponseEntity<Boolean> confirmarVenta(@RequestBody List<Producto> productos) {
-        return ResponseEntity.ok(ventaService.confirmarVenta(productos));
+    public ResponseEntity<Map<String, Object>> confirmarVenta(@RequestBody Map<String, Object> token) throws IOException {
+        return ResponseEntity.ok(ventaService.getTransactionStatus(token.get("token").toString()));
     }
 
 
