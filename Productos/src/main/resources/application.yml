@@ -11,4 +11,4 @@ transbank:
   api-key: 597055555532
   commerce-code: 579B532A7440BB0C9079DED94D31EA1615BACEB56610332264630D42D0A36B1C
   environment: INTEGRATION
-  return-url: http://localhost:8080/oneclick/finish
+  return-url: http://localhost:5173/catalogo
