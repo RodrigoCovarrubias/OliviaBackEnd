@@ -73,8 +73,6 @@ public class UserService {
                 !isValidCorreo ||
                 !isValidContrasena;
     }
-
-
     public List<RolesResponse> getRoles() {
         return userDto.getRoles();
     }

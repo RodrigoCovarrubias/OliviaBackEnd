@@ -19,7 +19,7 @@ public class NewsLetterService {
     public boolean suscribe(NewsLetterRequest newsLetter) {
         if (newsLetter.getNombre() == null || newsLetter.getCorreo() == null
                 || !newsLetter.getCorreo().matches(REGEX_EMAIL)
-                || !newsLetter.getNombre().matches(REGEX_NAME)) {
+                || newsLetter.getNombre().matches(REGEX_NAME)) {
             return false;
         }
         return newsLetterDto.suscribe(newsLetter);
