@@ -9,6 +9,7 @@ import org.apache.http.HttpHeaders;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpPut;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
@@ -39,6 +40,10 @@ public class VentaService {
     private static final ObjectMapper mapper = new ObjectMapper();
 
     private static final String TBANK_URL = "https://webpay3gint.transbank.cl/rswebpaytransaction/api/webpay/v1.3/transactions";
+
+    private static final String SUCCESS_URL = "http://localhost:5173/venta/exito";
+
+    private static final String FAIL_URL = "http://localhost:5173/venta/fallida";
 
     public Map<String, Object> createTransaction(List<VentaRequest> productos) throws IOException {
 
@@ -84,24 +89,28 @@ public class VentaService {
         }
     }
 
-    public Map<String, Object> getTransactionStatus(String token) throws IOException {
+    public String confirmTransaction(String token) throws IOException {
         try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
-            HttpGet httpGet = new HttpGet(TBANK_URL + "/" + token);
+            HttpPut httpPut = new HttpPut(TBANK_URL + "/" + token);
 
-            httpGet.setHeader("Authorization", "Token");
-            httpGet.setHeader("Tbk-Api-Key-Id", transBank.getApiKey());
-            httpGet.setHeader("Tbk-Api-Key-Secret", transBank.getCommerceCode());
-            httpGet.setHeader("Content-Type", "application/json");
+            httpPut.setHeader("Authorization", "Token");
+            httpPut.setHeader("Tbk-Api-Key-Id", transBank.getApiKey());
+            httpPut.setHeader("Tbk-Api-Key-Secret", transBank.getCommerceCode());
+            httpPut.setHeader("Content-Type", "application/json");
 
-            try (CloseableHttpResponse response = httpClient.execute(httpGet)) {
+            try (CloseableHttpResponse response = httpClient.execute(httpPut)) {
                 if (response.getStatusLine().getStatusCode() == 200) {
                     String responseString = EntityUtils.toString(response.getEntity(), "UTF-8");
-                    return mapper.readValue(responseString, HashMap.class);
+                    Integer responseCode = (Integer) mapper.readValue(responseString, HashMap.class).get("response_code");
+                    if (responseCode.equals(0)) {
+                        // En este punto tienen que descontar el stock porque tbk ya les aprobo la compra
+                        // agregar todos los parametros a la url para que el front los reciba y los muestre
+                        return SUCCESS_URL;
+                    } else {
+                        return FAIL_URL;
+                    }
                 } else {
-                    Map<String, Object> errorResponse = new HashMap<>();
-                    errorResponse.put("error", "Failed to get transaction status");
-                    errorResponse.put("status", response.getStatusLine().getStatusCode());
-                    return errorResponse;
+                    return FAIL_URL;
                 }
             }
         }

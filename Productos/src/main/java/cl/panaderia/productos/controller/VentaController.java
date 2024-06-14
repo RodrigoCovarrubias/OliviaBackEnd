@@ -3,9 +3,11 @@ package cl.panaderia.productos.controller;
 import cl.panaderia.productos.dominio.Producto;
 import cl.panaderia.productos.dominio.VentaRequest;
 import cl.panaderia.productos.service.VentaService;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.view.RedirectView;
 
 import java.io.IOException;
 import java.util.List;
@@ -31,9 +33,19 @@ public class VentaController {
     }
 
     @PostMapping("confirmarVenta")
-    public ResponseEntity<Map<String, Object>> confirmarVenta(@RequestBody Map<String, Object> token) throws IOException {
-        return ResponseEntity.ok(ventaService.getTransactionStatus(token.get("token").toString()));
+    public RedirectView confirmarVenta(@RequestBody Map<String, Object> token) throws IOException {
+        String urlToRedirect = ventaService.confirmTransaction(token.get("token").toString());
+        RedirectView rw = new RedirectView();
+        rw.setUrl(urlToRedirect);
+        return rw;
     }
 
+    @GetMapping("get/confirmarVenta")
+    public RedirectView getConfirmarVenta(@RequestParam Map<String, Object> token) throws IOException {
+        String urlToRedirect = ventaService.confirmTransaction(token.get("token_ws").toString());
+        RedirectView rw = new RedirectView();
+        rw.setUrl(urlToRedirect);
+        return rw;
+    }
 
 }
