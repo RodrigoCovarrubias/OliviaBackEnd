@@ -89,7 +89,10 @@ public class VentaService {
         }
     }
 
-    public String confirmTransaction(String token) throws IOException {
+    public String confirmTransaction(String token, boolean isClientAnnulment) throws IOException {
+        if (isClientAnnulment == true) {
+            return FAIL_URL;
+        }
         try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
             HttpPut httpPut = new HttpPut(TBANK_URL + "/" + token);
 

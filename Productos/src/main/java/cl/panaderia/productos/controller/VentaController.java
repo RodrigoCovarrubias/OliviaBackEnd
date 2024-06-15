@@ -32,17 +32,33 @@ public class VentaController {
 
     }
 
-    @PostMapping("confirmarVenta")
-    public RedirectView confirmarVenta(@RequestBody Map<String, Object> token) throws IOException {
-        String urlToRedirect = ventaService.confirmTransaction(token.get("token").toString());
+    @PostMapping("get/confirmarVenta")
+    public RedirectView confirmarVenta(@RequestBody Map<String, Object> req) throws IOException {
+        Object token = req.get("token_ws");
+        boolean isClientAnnulment = false;
+
+        if (req.get("TBK_TOKEN") != null) {
+            token = req.get("TBK_TOKEN");
+            isClientAnnulment = true;
+        }
+
+        String urlToRedirect = ventaService.confirmTransaction(token.toString(), isClientAnnulment);
         RedirectView rw = new RedirectView();
         rw.setUrl(urlToRedirect);
         return rw;
     }
 
     @GetMapping("get/confirmarVenta")
-    public RedirectView getConfirmarVenta(@RequestParam Map<String, Object> token) throws IOException {
-        String urlToRedirect = ventaService.confirmTransaction(token.get("token_ws").toString());
+    public RedirectView getConfirmarVenta(@RequestParam Map<String, Object> req) throws IOException {
+        Object token = req.get("token_ws");
+        boolean isClientAnnulment = false;
+
+        if (req.get("TBK_TOKEN") != null) {
+            token = req.get("TBK_TOKEN");
+            isClientAnnulment = true;
+        }
+
+        String urlToRedirect = ventaService.confirmTransaction(token.toString(), isClientAnnulment);
         RedirectView rw = new RedirectView();
         rw.setUrl(urlToRedirect);
         return rw;
