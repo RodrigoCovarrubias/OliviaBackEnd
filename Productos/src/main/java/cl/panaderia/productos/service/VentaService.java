@@ -104,11 +104,16 @@ public class VentaService {
             try (CloseableHttpResponse response = httpClient.execute(httpPut)) {
                 if (response.getStatusLine().getStatusCode() == 200) {
                     String responseString = EntityUtils.toString(response.getEntity(), "UTF-8");
-                    Integer responseCode = (Integer) mapper.readValue(responseString, HashMap.class).get("response_code");
+                    Map<String, Object> responseMap = mapper.readValue(responseString, HashMap.class);
+                    Integer responseCode = (Integer) responseMap.get("response_code");
                     if (responseCode.equals(0)) {
+                        Integer ammount = (Integer) responseMap.get("amount");
+                        String date = (String) responseMap.get("transaction_date");
+                        String auth = (String) responseMap.get("authorization_code");
+
                         // En este punto tienen que descontar el stock porque tbk ya les aprobo la compra
                         // agregar todos los parametros a la url para que el front los reciba y los muestre
-                        return SUCCESS_URL;
+                        return SUCCESS_URL+"?monto="+ammount+"&fechaTransaccion="+date+"&codigoAutorizacion="+auth;
                     } else {
                         return FAIL_URL;
                     }
