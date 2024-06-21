@@ -13,4 +13,6 @@ public class Producto {
     private Integer stock;
     private String imagenUrl;
     private String sku;
+    private String[] ingredientes;
+
 }

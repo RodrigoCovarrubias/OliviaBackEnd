@@ -1,5 +1,6 @@
 package cl.panaderia.productos.controller;
 
+import cl.panaderia.productos.dominio.ProductFilter;
 import cl.panaderia.productos.dominio.Producto;
 import cl.panaderia.productos.service.ProductoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.logging.Filter;
 
 @RestController
 @RequestMapping("/producto")
@@ -59,6 +61,11 @@ public class ProductoController {
     @PutMapping("/updateProducto")
     public ResponseEntity<Boolean> updateProducto(@RequestBody Producto producto) {
         return ResponseEntity.ok(productoService.updateProducto(producto));
+    }
+
+    @PostMapping("/getProductoByFilter")
+    ResponseEntity<List<Producto>> getProductoByFilter(@RequestBody ProductFilter filter) {
+        return ResponseEntity.ok(productoService.getProductoByFilter(filter));
     }
 
 

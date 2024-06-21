@@ -2,12 +2,11 @@ package cl.panaderia.productos.service;
 
 import cl.panaderia.productos.dominio.Producto;
 import cl.panaderia.productos.dominio.TransBank;
+import cl.panaderia.productos.dominio.ProductoVentaRequest;
 import cl.panaderia.productos.dominio.VentaRequest;
 import cl.panaderia.productos.dto.ServiceDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.apache.http.HttpHeaders;
 import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
 import org.apache.http.entity.StringEntity;
@@ -15,8 +14,6 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -45,12 +42,16 @@ public class VentaService {
 
     private static final String FAIL_URL = "http://localhost:5173/venta/fallida";
 
-    public Map<String, Object> createTransaction(List<VentaRequest> productos) throws IOException {
+    private Map<String, VentaRequest> ventas = new HashMap<>();
 
-       Map<String, Object> stockValidation = validateProduct(productos);
-
+    public Map<String, Object> createTransaction(VentaRequest ventaRequests) throws IOException {
+        List<ProductoVentaRequest> productos = ventaRequests.getProductos();
+        Map<String, Object> stockValidation = validateProduct(productos);
         if (stockValidation.isEmpty()) {
             int amount = calculateAmount(productos);
+            if (ventaRequests.getDespacho().getIdTipoDespacho() == 1) {
+                amount += 5000;
+            }
             try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
                 HttpPost httpPost = new HttpPost(TBANK_URL);
 
@@ -72,6 +73,7 @@ public class VentaService {
                 try (CloseableHttpResponse response = httpClient.execute(httpPost)) {
                     if (response.getStatusLine().getStatusCode() == 200) {
                         String responseString = EntityUtils.toString(response.getEntity(), "UTF-8");
+                        ventas.put(body.get("buy_order").toString(), ventaRequests);
                         return mapper.readValue(responseString, HashMap.class);
                     } else {
                         Map<String, Object> errorResponse = new HashMap<>();
@@ -101,18 +103,20 @@ public class VentaService {
             httpPut.setHeader("Tbk-Api-Key-Secret", transBank.getCommerceCode());
             httpPut.setHeader("Content-Type", "application/json");
 
+
             try (CloseableHttpResponse response = httpClient.execute(httpPut)) {
                 if (response.getStatusLine().getStatusCode() == 200) {
                     String responseString = EntityUtils.toString(response.getEntity(), "UTF-8");
-                    Map<String, Object> responseMap = mapper.readValue(responseString, HashMap.class);
+                    Map<String, Object> responseMap = mapper.readValue(responseString, Map.class);
                     Integer responseCode = (Integer) responseMap.get("response_code");
                     if (responseCode.equals(0)) {
                         Integer ammount = (Integer) responseMap.get("amount");
                         String date = (String) responseMap.get("transaction_date");
                         String auth = (String) responseMap.get("authorization_code");
-
-                        // En este punto tienen que descontar el stock porque tbk ya les aprobo la compra
-                        // agregar todos los parametros a la url para que el front los reciba y los muestre
+                        Integer idVenta = saveSell();
+                        saveDespacho(idVenta, ventas.get(responseMap.get("buy_order")));
+                        handleStock(idVenta, ventas.get(responseMap.get("buy_order")).getProductos());
+                        ventas.remove(responseMap.get("buy_order"));
                         return SUCCESS_URL+"?monto="+ammount+"&fechaTransaccion="+date+"&codigoAutorizacion="+auth;
                     } else {
                         return FAIL_URL;
@@ -124,15 +128,21 @@ public class VentaService {
         }
     }
     
-    public boolean confirmarVenta(List<Producto> productos) {
+    public Integer saveSell() {
 
         SecureRandom secureRandom = new SecureRandom();
         int idBoleta = secureRandom.nextInt(1000);
-        Integer idVenta = ventaDto.insertVenta(idBoleta);
-        return productoService.updateProductoStock(idVenta,productos);
+        return ventaDto.insertVenta(idBoleta);
+
     }
 
-    public int calculateAmount(List<VentaRequest> productos) {
+    public void saveDespacho(Integer idVenta, VentaRequest ventaRequest) {
+        ventaDto.insertDespacho(idVenta, ventaRequest.getDespacho());
+    }
+
+
+
+    public int calculateAmount(List<ProductoVentaRequest> productos) {
         return productos.stream()
                 .mapToInt(producto ->{
                     Producto producto1 = productoService.getProductoById(producto.getId());
@@ -141,7 +151,7 @@ public class VentaService {
     }
 
 
-    public Map<String, Object> validateProduct(List<VentaRequest> ventas) {
+    public Map<String, Object> validateProduct(List<ProductoVentaRequest> ventas) {
         return ventas.stream()
                 .map(venta -> {
                     Producto producto = productoService.getProductoById(venta.getId());
@@ -164,4 +174,12 @@ public class VentaService {
                 .filter(Objects::nonNull)
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
     }
+
+    private void handleStock(Integer idVenta, List<ProductoVentaRequest> req) {
+        ventaDto.batcgInsertVentaProducto(idVenta, req);
+        req.forEach(producto -> {
+            productoService.updateStock(producto.getId(), producto.getQuantity());
+        });
+    }
+
 }

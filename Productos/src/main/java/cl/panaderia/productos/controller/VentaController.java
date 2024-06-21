@@ -1,11 +1,9 @@
 package cl.panaderia.productos.controller;
 
-import cl.panaderia.productos.dominio.Producto;
+import cl.panaderia.productos.dominio.ProductoVentaRequest;
 import cl.panaderia.productos.dominio.VentaRequest;
 import cl.panaderia.productos.service.VentaService;
-import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
 
@@ -21,7 +19,7 @@ public class VentaController {
     private VentaService ventaService;
 
     @PostMapping("pay")
-    public Map<String, Object> pay(@RequestBody List<VentaRequest> productos) {
+    public Map<String, Object> pay(@RequestBody VentaRequest productos) {
 
         try {
             return ventaService.createTransaction(productos);

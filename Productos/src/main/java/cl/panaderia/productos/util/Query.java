@@ -13,7 +13,7 @@ public class Query {
     public static final String DELETE_USUARIO = "DELETE FROM usuario WHERE id = ?";
     public static final String INSERT_USER = "INSERT INTO usuario (nombre, apaterno, amaterno, correo, contrasena,id_rol) VALUES (?, ?, ?, ?, ?, ?)";
     public static final String SELECT_ALL = "SELECT * FROM productos";
-    public static final String INSERT = "INSERT INTO producto (nombre, id_categoria, descripcion, precio, imagen_url, stock, sku) VALUES (?, ?, ?, ?, ?, ?, ?)";
+    public static final String INSERT = "INSERT INTO producto (nombre, id_categoria, descripcion, precio, imagen_url, stock, sku, ingredientes) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
     public static final String INSERT_CATEGORIA = "INSERT INTO categoria (nombre) VALUES (?)";
     public static final String SELECT_ALL_CATEGORIA = "SELECT * FROM categoria";
     public static final String GET_PRODUCTO_FROM_CATEGORY = "SELECT * FROM producto WHERE id_categoria = ?";
@@ -30,4 +30,7 @@ public class Query {
     public static final String GET_NEWSLETTER_SUBS = "SELECT * FROM newsletter";
     public static final String GET_PRODUCTO_VALUE = "SELECT precio FROM producto WHERE id = ?";
     public static final String GET_PRODUCTO_STOCK = "SELECT stock FROM producto WHERE id = ?";
+    public static final String UPDATESTOCK = "UPDATE producto SET stock = stock - ? WHERE id = ?";
+    public static final String INSERTPRODUCTBYVENTA = "INSERT INTO public.venta_producto (id_venta, id_producto,cantidad) VALUES(?, ?, ?)";
+    public static final String INSERT_DESPACHO = "INSERT INTO public.despacho (id_venta,id_tipo_despacho, correo, direccion, comuna, ciudad) VALUES(?, ?, ?, ?, ?, ?)";
 }

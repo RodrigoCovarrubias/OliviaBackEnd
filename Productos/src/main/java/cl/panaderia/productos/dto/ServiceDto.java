@@ -5,12 +5,12 @@ import cl.panaderia.productos.util.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.PreparedStatementCreator;
+import org.springframework.jdbc.core.PreparedStatementSetter;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
-import java.sql.Connection;
+import java.sql.Array;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -24,13 +24,17 @@ public class ServiceDto {
 
 
     public boolean insertProducto(Producto producto) {
-        return jdbcTemplate.update(Query.INSERT, producto.getNombre()
-                , producto.getIdCategoria()
-                , producto.getDescripcion()
-                , producto.getPrecio()
-                , producto.getImagenUrl()
-                , producto.getStock()
-                , producto.getSku()) == 1;
+        return jdbcTemplate.update(Query.INSERT, ps -> {
+            ps.setString(1, producto.getNombre());
+            ps.setLong(2, producto.getIdCategoria());
+            ps.setString(3, producto.getDescripcion());
+            ps.setInt(4, producto.getPrecio());
+            ps.setString(5, producto.getImagenUrl());
+            ps.setInt(6, producto.getStock());
+            ps.setString(7, producto.getSku());
+            Array ingredientesArray = ps.getConnection().createArrayOf("VARCHAR", producto.getIngredientes());
+            ps.setArray(8, ingredientesArray);
+        }) == 1;
     }
 
     public boolean createCategoria(String nombre) {
@@ -82,6 +86,8 @@ public class ServiceDto {
                 producto.setStock(rs.getInt("stock"));
                 producto.setImagenUrl(rs.getString("imagen_url"));
                 producto.setSku(rs.getString("sku"));
+                String ingredientes = rs.getString("ingredientes");
+                if (ingredientes != null) producto.setIngredientes(ingredientes.replaceAll("[{}]","").split(","));
                 productos.add(producto);
             }
             return productos;
@@ -290,15 +296,12 @@ public class ServiceDto {
     public int insertVenta(Integer idBoleta) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
 
-        jdbcTemplate.update(new PreparedStatementCreator() {
-            @Override
-            public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
-                PreparedStatement ps = connection.prepareStatement(Query.INSERT_VENTA, new String[] {"id"});
-                ps.setInt(1, 1); // medio de pago seteado en duro ya que solo considera pagos por webpay
-                ps.setInt(2, idBoleta);
-                ps.setDate(3, new java.sql.Date(System.currentTimeMillis()));
-                return ps;
-            }
+        jdbcTemplate.update(connection -> {
+            PreparedStatement ps = connection.prepareStatement(Query.INSERT_VENTA, new String[] {"id"});
+            ps.setInt(1, 1); // medio de pago seteado en duro ya que solo considera pagos por webpay
+            ps.setInt(2, idBoleta);
+            ps.setDate(3, new java.sql.Date(System.currentTimeMillis()));
+            return ps;
         }, keyHolder);
 
         return keyHolder.getKey().intValue();
@@ -366,6 +369,22 @@ public class ServiceDto {
                     return false;
                 }
         ));
+    }
+
+    public void updateStock (Integer id, Integer quantity) {
+        jdbcTemplate.update(Query.UPDATESTOCK, quantity, id);
+    }
+
+    public void batcgInsertVentaProducto(Integer idVenta, List<ProductoVentaRequest> productos) {
+        jdbcTemplate.batchUpdate(Query.INSERTPRODUCTBYVENTA, productos, productos.size(), (ps, producto) -> {
+            ps.setInt(1, idVenta);
+            ps.setInt(2, producto.getId());
+            ps.setInt(3, producto.getQuantity());
+        });
+    }
+
+    public void insertDespacho(Integer idVenta, Despacho despacho) {
+        jdbcTemplate.update(Query.INSERT_DESPACHO, idVenta, despacho.getIdTipoDespacho(),despacho.getCorreo(),despacho.getDireccion(), despacho.getComuna(), despacho.getCiudad());
     }
 
 }
