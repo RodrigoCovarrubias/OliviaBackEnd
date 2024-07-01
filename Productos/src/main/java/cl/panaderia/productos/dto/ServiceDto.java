@@ -386,5 +386,31 @@ public class ServiceDto {
     public void insertDespacho(Integer idVenta, Despacho despacho) {
         jdbcTemplate.update(Query.INSERT_DESPACHO, idVenta, despacho.getIdTipoDespacho(),despacho.getCorreo(),despacho.getDireccion(), despacho.getComuna(), despacho.getCiudad());
     }
+    public List<Sell> getSell(Integer id) {
 
+        return jdbcTemplate.query(Query.GET_SELL,ps-> ps.setInt(1, id), rs -> {
+            List<Sell> sells = new ArrayList<>();
+            while (rs.next()) {
+                Sell venta = new Sell();
+                venta.setId(rs.getLong("id_venta"));
+                venta.setIdProducto(rs.getInt("id_producto"));
+                venta.setId(rs.getLong("id"));
+                venta.setCantidad(rs.getInt("cantidad"));
+                sells.add(venta);
+            }
+            return sells;
+        });
+    }
+
+    public Integer getSellType(Integer id) {
+        return jdbcTemplate.query(Query.GET_SELL_TYPE, ps ->
+                ps.setInt(1, id),
+                rs -> {
+            if (rs.next()) {
+                return rs.getInt("id_tipo_despacho");
+            } else {
+                return null;
+            }
+        });
+    }
 }

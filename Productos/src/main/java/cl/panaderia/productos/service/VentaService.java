@@ -1,10 +1,9 @@
 package cl.panaderia.productos.service;
 
-import cl.panaderia.productos.dominio.Producto;
-import cl.panaderia.productos.dominio.TransBank;
-import cl.panaderia.productos.dominio.ProductoVentaRequest;
-import cl.panaderia.productos.dominio.VentaRequest;
+import cl.panaderia.productos.dominio.*;
 import cl.panaderia.productos.dto.ServiceDto;
+import cl.panaderia.productos.rest.ProductSellDetail;
+import cl.panaderia.productos.rest.SellDetail;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
@@ -117,7 +116,7 @@ public class VentaService {
                         saveDespacho(idVenta, ventas.get(responseMap.get("buy_order")));
                         handleStock(idVenta, ventas.get(responseMap.get("buy_order")).getProductos());
                         ventas.remove(responseMap.get("buy_order"));
-                        return SUCCESS_URL+"?monto="+ammount+"&fechaTransaccion="+date+"&codigoAutorizacion="+auth;
+                        return SUCCESS_URL+"?monto="+ammount+"&fechaTransaccion="+date+"&codigoAutorizacion="+auth+"ventaId="+idVenta;
                     } else {
                         return FAIL_URL;
                     }
@@ -182,4 +181,23 @@ public class VentaService {
         });
     }
 
+    public SellDetail getSell(Integer idVenta) {
+        SellDetail sellDetail = new SellDetail();
+        List<Sell> sells = ventaDto.getSell(idVenta);
+        sells.forEach(sell -> {
+            Producto producto = productoService.getProductoById(sell.getIdProducto());
+            ProductSellDetail productSellDetail = new ProductSellDetail();
+            productSellDetail.setName(producto.getNombre());
+            productSellDetail.setPrice(producto.getPrecio());
+            productSellDetail.setQuantity(sell.getCantidad());
+            productSellDetail.setUrl(producto.getImagenUrl());
+            sellDetail.getProductos().add(productSellDetail);
+            sellDetail.setTotal(sellDetail.getTotal() + productSellDetail.getQuantity() * producto.getPrecio());
+        });
+        sellDetail.setType(ventaDto.getSellType(idVenta));
+        if (sellDetail.getType() == 1) {
+            sellDetail.setTotal(sellDetail.getTotal() + 5000);
+        }
+        return sellDetail;
+    }
 }

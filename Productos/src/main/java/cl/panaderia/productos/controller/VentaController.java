@@ -2,6 +2,7 @@ package cl.panaderia.productos.controller;
 
 import cl.panaderia.productos.dominio.ProductoVentaRequest;
 import cl.panaderia.productos.dominio.VentaRequest;
+import cl.panaderia.productos.rest.SellDetail;
 import cl.panaderia.productos.service.VentaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -60,6 +61,10 @@ public class VentaController {
         RedirectView rw = new RedirectView();
         rw.setUrl(urlToRedirect);
         return rw;
+    }
+    @GetMapping("/getSellDetail")
+    public SellDetail sellDetail(@RequestParam(name = "idVenta") Integer idVenta) {
+        return ventaService.getSell(idVenta);
     }
 
 }
