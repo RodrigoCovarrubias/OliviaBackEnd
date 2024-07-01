@@ -18,7 +18,7 @@ public class AuthService {
     public AuthResponse getAuthDto(AuthRequest authRequest) {
         String password = Base64.getEncoder().encodeToString(authRequest.getPassword().getBytes());
         Integer idRol = authDto.getLogin(authRequest.getEmail(), password);
-        if (idRol !=null) {
+        if (idRol == 1 || idRol == 2) {
             return new AuthResponse(true, UUID.randomUUID().toString().replace("-", "").substring(0, 20),idRol);
         } else {
             return new AuthResponse(false,null, null);
