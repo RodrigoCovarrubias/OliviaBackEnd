@@ -35,4 +35,5 @@ public class Query {
     public static final String INSERT_DESPACHO = "INSERT INTO public.despacho (id_venta,id_tipo_despacho, correo, direccion, comuna, ciudad) VALUES(?, ?, ?, ?, ?, ?)";
     public static final String GET_SELL = "SELECT id_venta, id_producto, id, cantidad FROM public.venta_producto WHERE id_venta = ?";
     public static final String GET_SELL_TYPE = "SELECT id_tipo_despacho from despacho WHERE id_venta = ?";
+    public static final String VALIDATE_LOGIN = "SELECT id_rol FROM public.usuario where contrasena = ? and correo = ?;";
 }

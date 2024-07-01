@@ -413,4 +413,17 @@ public class ServiceDto {
             }
         });
     }
+
+    public Integer getLogin(String name, String password) {
+        return jdbcTemplate.query(Query.VALIDATE_LOGIN, ps -> {
+            ps.setString(1, password);
+            ps.setString(2, name);
+        }, rs -> {
+            if (rs.next()) {
+                return rs.getInt("id_rol");
+            } else {
+                return 0;
+            }
+        });
+    }
 }
