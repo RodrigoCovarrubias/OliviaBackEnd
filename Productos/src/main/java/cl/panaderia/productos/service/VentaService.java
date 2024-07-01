@@ -116,7 +116,7 @@ public class VentaService {
                         saveDespacho(idVenta, ventas.get(responseMap.get("buy_order")));
                         handleStock(idVenta, ventas.get(responseMap.get("buy_order")).getProductos());
                         ventas.remove(responseMap.get("buy_order"));
-                        return SUCCESS_URL+"?monto="+ammount+"&fechaTransaccion="+date+"&codigoAutorizacion="+auth+"ventaId="+idVenta;
+                        return SUCCESS_URL+"?monto="+ammount+"&fechaTransaccion="+date+"&codigoAutorizacion="+auth+"&ventaId="+idVenta;
                     } else {
                         return FAIL_URL;
                     }
