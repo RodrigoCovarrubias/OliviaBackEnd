@@ -14,5 +14,7 @@ public class Despacho {
     private String direccion;
     private String comuna;
     private String ciudad;
+    private String nombre;
+    private Integer numero;
 
 }

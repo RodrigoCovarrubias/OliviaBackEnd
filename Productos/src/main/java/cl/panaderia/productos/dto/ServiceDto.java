@@ -384,7 +384,8 @@ public class ServiceDto {
     }
 
     public void insertDespacho(Integer idVenta, Despacho despacho) {
-        jdbcTemplate.update(Query.INSERT_DESPACHO, idVenta, despacho.getIdTipoDespacho(),despacho.getCorreo(),despacho.getDireccion(), despacho.getComuna(), despacho.getCiudad());
+        jdbcTemplate.update(Query.INSERT_DESPACHO,
+                idVenta, despacho.getIdTipoDespacho(),despacho.getCorreo(),despacho.getDireccion(), despacho.getComuna(), despacho.getCiudad(), despacho.getNombre(), despacho.getNumero());
     }
     public List<Sell> getSell(Integer id) {
 
