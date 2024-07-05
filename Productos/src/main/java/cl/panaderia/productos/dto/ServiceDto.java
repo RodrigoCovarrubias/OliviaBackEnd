@@ -389,6 +389,23 @@ public class ServiceDto {
         jdbcTemplate.update(Query.INSERT_DESPACHO,
                 idVenta, despacho.getIdTipoDespacho(),despacho.getCorreo(),despacho.getDireccion(), despacho.getComuna(), despacho.getCiudad(), despacho.getNombre(), despacho.getNumero());
     }
+
+    public Despacho getDespachoById(Integer id) {
+        return jdbcTemplate.query(Query.GET_DESPACHO, ps -> ps.setInt(1, id), rs -> {
+            if (rs.next()) {
+                return new Despacho(
+                        rs.getInt("id_tipo_despacho"),
+                        rs.getString("correo"),
+                        rs.getString("direccion"),
+                        rs.getString("comuna"),
+                        rs.getString("ciudad"),
+                        rs.getString("nombre"),
+                        rs.getInt("numero")
+
+                );
+            } return new Despacho();
+        });
+    }
     public List<Sell> getSell(Integer id) {
 
         return jdbcTemplate.query(Query.GET_SELL,ps-> ps.setInt(1, id), rs -> {
@@ -417,15 +434,16 @@ public class ServiceDto {
         });
     }
 
-    public Integer getLogin(String name, String password) {
+    public User getLogin(String name, String password) {
         return jdbcTemplate.query(Query.VALIDATE_LOGIN, ps -> {
             ps.setString(1, password);
             ps.setString(2, name);
         }, rs -> {
             if (rs.next()) {
-                return rs.getInt("id_rol");
+                return new User(rs.getString("nombre")
+                        ,rs.getInt("id_rol"));
             } else {
-                return 0;
+                return null;
             }
         });
     }

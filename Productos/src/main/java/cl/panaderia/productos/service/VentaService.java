@@ -13,12 +13,14 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.security.SecureRandom;
 import java.time.Instant;
 import java.util.*;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.stream.Collectors;
 
 @Service
@@ -182,6 +184,7 @@ public class VentaService {
         });
     }
 
+    @Cacheable(value = "sellCache", key = "#idVenta")
     public SellDetail getSell(Integer idVenta) {
         SellDetail sellDetail = new SellDetail();
         List<Sell> sells = ventaDto.getSell(idVenta);
@@ -203,15 +206,17 @@ public class VentaService {
     }
 
     public List<SellDetailWithStatus> getSellWithStatus() {
-        List<SellDetailWithStatus> sellDetails = new ArrayList<>();
-        ventaDto.getAllSells().forEach(id -> {
+        List<Integer> sellIds = ventaDto.getAllSells();
+        List<SellDetailWithStatus> sellDetails = sellIds.parallelStream().map(id -> {
             SellDetailWithStatus sellDetailWithStatus = converToSellDetailWithStatus(getSell(id));
             StatusDetail statusDetail = ventaDto.getSellStatus(id);
             sellDetailWithStatus.setStatus(statusDetail.getNombre());
             sellDetailWithStatus.setStatusDate(statusDetail.getFecha());
             sellDetailWithStatus.setId(id);
-            sellDetails.add(sellDetailWithStatus);
-        });
+            sellDetailWithStatus.setDespacho(ventaDto.getDespachoById(id));
+            return sellDetailWithStatus;
+        })
+        .collect(Collectors.toCollection(CopyOnWriteArrayList::new));
         return sellDetails;
     }
 

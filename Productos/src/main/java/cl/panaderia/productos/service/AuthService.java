@@ -1,5 +1,6 @@
 package cl.panaderia.productos.service;
 
+import cl.panaderia.productos.dominio.User;
 import cl.panaderia.productos.dto.ServiceDto;
 import cl.panaderia.productos.rest.AuthRequest;
 import cl.panaderia.productos.rest.AuthResponse;
@@ -17,11 +18,11 @@ public class AuthService {
 
     public AuthResponse getAuthDto(AuthRequest authRequest) {
         String password = Base64.getEncoder().encodeToString(authRequest.getPassword().getBytes());
-        Integer idRol = authDto.getLogin(authRequest.getEmail(), password);
-        if (idRol == 1 || idRol == 2) {
-            return new AuthResponse(true, UUID.randomUUID().toString().replace("-", "").substring(0, 20),idRol);
+        User user = authDto.getLogin(authRequest.getEmail(), password);
+        if (user != null) {
+            return new AuthResponse(true, UUID.randomUUID().toString().replace("-", "").substring(0, 20),user.getIdRol(), user.getNombre());
         } else {
-            return new AuthResponse(false,null, null);
+            return new AuthResponse(false,null, null, null);
         }
     }
 }

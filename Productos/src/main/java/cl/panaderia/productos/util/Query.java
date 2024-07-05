@@ -35,9 +35,10 @@ public class Query {
     public static final String INSERT_DESPACHO = "INSERT INTO public.despacho (id_venta,id_tipo_despacho, correo, direccion, comuna, ciudad, nombre, numero) VALUES(?, ?, ?, ?, ?, ?, ?, ?)";
     public static final String GET_SELL = "SELECT id_venta, id_producto, id, cantidad FROM public.venta_producto WHERE id_venta = ?";
     public static final String GET_SELL_TYPE = "SELECT id_tipo_despacho from despacho WHERE id_venta = ?";
-    public static final String VALIDATE_LOGIN = "SELECT id_rol FROM public.usuario where contrasena = ? and correo = ?;";
+    public static final String VALIDATE_LOGIN = "SELECT id_rol, nombre ||' '||apaterno as nombre  FROM public.usuario where contrasena = ? and correo = ?;";
     public static final String GET_ALL_SELLS = "select id from venta v";
     public static final String GET_SELL_STATUS = "select e.nombre, ve.fecha from venta_estado ve inner join estado e on e.id = ve.id_estado where id_venta = ? order by fecha desc limit 1";
     public static final String INSERT_SELL_STATUS = "INSERT INTO public.venta_estado(id_venta, id_estado, fecha)VALUES(?, ?, NOW())";
     public static final String GET_ALL_STATUS = "select * from estado e ";
+    public static final String GET_DESPACHO = "SELECT id_tipo_despacho, correo, direccion, comuna, ciudad, numero, nombre FROM public.despacho where id_venta = ? limit 1";
 }

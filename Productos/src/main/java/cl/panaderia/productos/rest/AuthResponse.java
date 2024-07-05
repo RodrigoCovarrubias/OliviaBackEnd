@@ -12,4 +12,5 @@ public class AuthResponse {
     private Boolean success;
     private String token;
     private Integer idRol;
+    private String nombre;
 }

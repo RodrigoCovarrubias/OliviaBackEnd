@@ -11,6 +11,7 @@ public class SellDetailWithStatus extends SellDetail {
     private String status;
     private Date statusDate;
     private Integer id;
+    private Despacho despacho;
 
 
 }
