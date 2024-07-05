@@ -2,6 +2,7 @@ package cl.panaderia.productos.controller;
 
 import cl.panaderia.productos.dominio.ProductoVentaRequest;
 import cl.panaderia.productos.dominio.SellDetailWithStatus;
+import cl.panaderia.productos.dominio.Status;
 import cl.panaderia.productos.dominio.VentaRequest;
 import cl.panaderia.productos.rest.SellDetail;
 import cl.panaderia.productos.service.VentaService;
@@ -78,6 +79,11 @@ public class VentaController {
     public Boolean updateStatus(@RequestParam Integer idVenta, @RequestParam Integer idStatus) {
         return ventaService.updateStatus(idVenta, idStatus);
 
+    }
+
+    @GetMapping("getStatus")
+    public List<Status> getSellDetail() {
+        return ventaService.getStatus();
     }
 
 }

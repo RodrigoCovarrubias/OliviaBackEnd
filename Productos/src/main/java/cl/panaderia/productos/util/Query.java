@@ -39,4 +39,5 @@ public class Query {
     public static final String GET_ALL_SELLS = "select id from venta v";
     public static final String GET_SELL_STATUS = "select e.nombre, ve.fecha from venta_estado ve inner join estado e on e.id = ve.id_estado where id_venta = ? order by fecha desc limit 1";
     public static final String INSERT_SELL_STATUS = "INSERT INTO public.venta_estado(id_venta, id_estado, fecha)VALUES(?, ?, NOW())";
+    public static final String GET_ALL_STATUS = "select * from estado e ";
 }

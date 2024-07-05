@@ -458,4 +458,8 @@ public class ServiceDto {
             ps.setInt(2, status);
         }) ==1;
     }
+
+    public List<Status> getStatus() {
+        return jdbcTemplate.queryForList(Query.GET_ALL_STATUS,Status.class);
+    }
 }

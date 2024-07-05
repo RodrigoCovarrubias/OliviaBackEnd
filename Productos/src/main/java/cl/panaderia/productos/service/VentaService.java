@@ -226,4 +226,8 @@ public class VentaService {
     public Boolean updateStatus(Integer idVenta, Integer status) {
         return ventaDto.saveSellStatus(idVenta, status);
     }
+
+    public List<Status> getStatus() {
+        return ventaDto.getStatus();
+    }
 }
