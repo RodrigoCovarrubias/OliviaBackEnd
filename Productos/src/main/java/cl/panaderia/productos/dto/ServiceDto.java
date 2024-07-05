@@ -13,7 +13,9 @@ import org.springframework.stereotype.Repository;
 import java.sql.Array;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Repository
@@ -426,5 +428,34 @@ public class ServiceDto {
                 return 0;
             }
         });
+    }
+
+    public List<Integer> getAllSells() {
+        return jdbcTemplate.query(Query.GET_ALL_SELLS, rs ->{
+            List<Integer> sells = new ArrayList<>();
+            while (rs.next()) {
+                sells.add(rs.getInt("id"));
+           }
+            return sells;
+        });
+    }
+
+    public StatusDetail getSellStatus(Integer id) {
+        return jdbcTemplate.query(Query.GET_SELL_STATUS, ps -> ps.setInt(1, id), rs -> {
+            if (rs.next()) {
+                Date date = new Date(rs.getTimestamp("fecha").getTime());
+                return new StatusDetail(
+                        rs.getString("nombre"),
+                        date);
+            }
+            return null;
+        });
+    }
+
+    public Boolean saveSellStatus(Integer id, Integer status) {
+        return jdbcTemplate.update(Query.INSERT_SELL_STATUS,ps -> {
+            ps.setInt(1, id);
+            ps.setInt(2, status);
+        }) ==1;
     }
 }

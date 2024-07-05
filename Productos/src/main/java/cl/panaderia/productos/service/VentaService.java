@@ -115,6 +115,7 @@ public class VentaService {
                         Integer idVenta = saveSell();
                         saveDespacho(idVenta, ventas.get(responseMap.get("buy_order")));
                         handleStock(idVenta, ventas.get(responseMap.get("buy_order")).getProductos());
+                        ventaDto.saveSellStatus(idVenta,1);
                         ventas.remove(responseMap.get("buy_order"));
                         return SUCCESS_URL+"?monto="+ammount+"&fechaTransaccion="+date+"&codigoAutorizacion="+auth+"&ventaId="+idVenta;
                     } else {
@@ -199,5 +200,30 @@ public class VentaService {
             sellDetail.setTotal(sellDetail.getTotal() + 5000);
         }
         return sellDetail;
+    }
+
+    public List<SellDetailWithStatus> getSellWithStatus() {
+        List<SellDetailWithStatus> sellDetails = new ArrayList<>();
+        ventaDto.getAllSells().forEach(id -> {
+            SellDetailWithStatus sellDetailWithStatus = converToSellDetailWithStatus(getSell(id));
+            StatusDetail statusDetail = ventaDto.getSellStatus(id);
+            sellDetailWithStatus.setStatus(statusDetail.getNombre());
+            sellDetailWithStatus.setStatusDate(statusDetail.getFecha());
+            sellDetailWithStatus.setId(id);
+            sellDetails.add(sellDetailWithStatus);
+        });
+        return sellDetails;
+    }
+
+    private SellDetailWithStatus converToSellDetailWithStatus(SellDetail sellDetail) {
+        SellDetailWithStatus sellDetailWithStatus = new SellDetailWithStatus();
+        sellDetailWithStatus.setProductos(sellDetail.getProductos());
+        sellDetailWithStatus.setTotal(sellDetail.getTotal());
+        sellDetailWithStatus.setType(sellDetail.getType());
+        return sellDetailWithStatus;
+    }
+
+    public Boolean updateStatus(Integer idVenta, Integer status) {
+        return ventaDto.saveSellStatus(idVenta, status);
     }
 }
